@@ -259,27 +259,19 @@ all = [
 [project.scripts]
 hermes = "hermes_cli.main:main"
 hermes-agent = "run_agent:main"
-hermes-acp = "acp_adapter.entry:main"
 
 [tool.setuptools]
-py-modules = ["run_agent", "model_tools", "toolsets", "batch_runner", "trajectory_compressor", "toolset_distributions", "cli", "hermes_bootstrap", "hermes_constants", "hermes_state", "hermes_time", "hermes_logging", "utils", "mcp_serve"]
+py-modules = ["run_agent", "model_tools", "toolsets", "cli", "hermes_bootstrap", "hermes_constants", "hermes_state", "hermes_time", "hermes_logging", "utils"]
 
 [tool.setuptools.data-files]
-# i18n catalogs. locales/ is a bare data directory (no __init__.py), so it is
-# neither a package (packages.find) nor package-data (which attaches to a
-# package). data-files ships it in the wheel; MANIFEST.in `graft locales`
-# ships it in the sdist. Without this, sealed installs (pip wheel, Nix store
-# venv) drop the catalogs and gateway/CLI commands surface raw i18n keys like
-# `gateway.reset.header_default` (#27632, #35374, #23943).
-locales = ["locales/*.yaml"]
+# i18n catalog (English baseline only in this slim build). Source/editable
+# installs read <repo-root>/locales directly; this ships it in wheels too.
+locales = ["locales/en.yaml"]
 
 [tool.setuptools.package-data]
-hermes_cli = ["web_dist/**/*", "tui_dist/**/*", "scripts/install.sh", "scripts/install.ps1"]
+hermes_cli = ["scripts/install.sh", "scripts/install.ps1"]
 gateway = ["assets/**/*"]
 plugins = [
-  "*/dashboard/manifest.json",
-  "*/dashboard/dist/*",
-  "*/dashboard/dist/**/*",
   # Plugin discovery (hermes_cli/plugins.py) reads a plugin.yaml/plugin.yml
   # manifest from each bundled plugin directory to register it. Wheels only
   # carry files declared here, so without this glob the wheel ships every
@@ -292,7 +284,7 @@ plugins = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["agent", "agent.*", "tools", "tools.*", "hermes_cli", "hermes_cli.*", "gateway", "gateway.*", "tui_gateway", "tui_gateway.*", "cron", "acp_adapter", "plugins", "plugins.*", "providers", "providers.*"]
+include = ["agent", "agent.*", "tools", "tools.*", "hermes_cli", "hermes_cli.*", "gateway", "gateway.*", "cron", "plugins", "plugins.*", "providers", "providers.*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

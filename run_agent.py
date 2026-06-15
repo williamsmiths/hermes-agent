@@ -128,7 +128,11 @@ from model_tools import (
 )
 from tools.terminal_tool import cleanup_vm
 from tools.interrupt import set_interrupt as _set_interrupt
-from tools.browser_tool import cleanup_browser
+
+
+def cleanup_browser(task_id=None):  # noqa: D401 - browser toolset removed in slim build
+    """No-op stub: browser toolset was removed from this slim build."""
+    return None
 
 
 # Agent internals extracted to agent/ package for modularity
